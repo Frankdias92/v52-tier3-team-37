@@ -16,11 +16,13 @@
   "description": "API for scheduling and managing solar panel evaluation requests in Los Angeles. Supports resident appointments, city staff scheduling, optimized route planning, and real-time status updates.",
   "devDependencies": {
     "@types/node": "22.9.0",
+    "prisma": "5.22.0",
     "tsup": "8.3.5",
     "tsx": "4.19.2",
     "typescript": "5.6.3"
   },
   "dependencies": {
+    "@prisma/client": "5.22.0",
     "fastify": "5.1.0"
   }
 }
