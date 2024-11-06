@@ -13,61 +13,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id String @id @default(uuid())
-  isAdmin Boolean
-  email String @unique
+  id          String            @id @default(uuid())
+  isAdmin     Boolean
+  email       String            @unique
   phoneNumber String?
-  firstName String
-  lastName String
+  firstName   String
+  lastName    String
 
-  address Address? @relation(fields: [addressId], references: [id])
-  addressId String?
+  address     Address?          @relation(fields: [addressId], references: [id])
+  addressId   String?
 
-  createdAt DateTime @default(now())
-  requests ResidentRequest[]
+  createdAt   DateTime          @default(now())
+  
+  requests    ResidentRequest[]
 
   @@map("users")
 }
 
 model ResidentRequest {
-  id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
+  id                String          @id @default(uuid())
 
-  status RequestStatus @default(PENDING)
+  user              User            @relation(fields: [user_id], references: [id])
+  user_id           String
 
-  requestedTimeSlotId String
-  requestedTimeSlot TimeSlot @relation("RequestedTimeSlot", fields: [requestedTimeSlotId], references: [id], map: "resident_request_requested_timeslot_fkey")
+  status            RequestStatus   @default(PENDING)
+
+  requestedTimeSlot TimeSlot        @relation("RequestedTimeSlot", fields: [request_time_slot_id], references: [id])
+  request_time_slot_id String
+
+  assignedTimeSlot  TimeSlot?       @relation("AssignedTimeSlot", fields: [assigned_time_slot_id], references: [id])
+  assigned_time_slot_id String?
   
-  assignedTimeSlotId String
-  assignedTimeSlot TimeSlot? @relation("AssignedTimeSlot", fields: [assignedTimeSlotId], references: [id], map: "resident_request_asssigned_timeslot_fkey")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 
   @@map("resident_requests")
 }
 
 model Address {
-  id String @id @default(uuid())
-  streetName String
+  id          String   @id @default(uuid())
+  streetName  String
   streetNumber String
-  city String
-  zipCode String
-  latitude Float
-  longitude Float
+  city        String
+  zipCode     String
+  latitude    Float
+  longitude   Float
 
-  users User[]
+  users       User[]
 
   @@map("addresses")
 }
 
 model TimeSlot {
-  id String @id @default(uuid())
-  startTime DateTime
-  endTime DateTime
+  id          String   @id @default(uuid())
+  startTime   DateTime
+  endTime     DateTime
   description String?
 
   residentRequestsResidentTimeSlots ResidentRequest[] @relation("RequestedTimeSlot")
